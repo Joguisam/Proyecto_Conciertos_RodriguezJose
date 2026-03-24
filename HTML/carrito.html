@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>TOKETHUB | Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="CSS/carrito.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">TOKETHUB</div>
+        <div class="nav-actions">
+            <button class="icon-btn" id="cart-icon-btn" style="background:none; border:none; color:white; cursor:pointer;">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <a class="sidebar-link" href="index.html"><span class="material-symbols-outlined">explore</span> Discover</a>
+        <a class="sidebar-link" href="#"><span class="material-symbols-outlined">event</span> Events</a>
+        <a class="sidebar-link" href="#"><span class="material-symbols-outlined">sports_basketball</span> Sports</a>
+    </nav>  
+
+    <div class="cart-container">
+        <div class="cart-items-section">
+            <h1 class="section-title">Your Selection</h1>
+            <div id="cart-items-container">
+                </div>
+            <div class="cart-summary">
+                <span>Total Amount:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+        </div>
+
+        <div class="checkout-section">
+            <h2 class="section-title">Billing Details</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label class="form-label">Identification</label>
+                    <input class="form-input" id="checkout-id" placeholder="e.g. 1029384756" type="text" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input class="form-input" id="checkout-name" placeholder="Johnathan Doe" type="text" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">E-mail Address</label>
+                    <input class="form-input" id="checkout-email" placeholder="john@tokethub.com" type="email" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Physical Address</label>
+                    <input class="form-input" id="checkout-address" placeholder="123 Prism Avenue" type="text" required />
+                </div>
+                
+                <button class="btn-primary" type="submit" id="btn-complete-purchase">Buy Tickets Now</button>
+                <button class="btn-ghost" type="button" onclick="location.href='index.html'">Cancel & Return</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Current Cart</h3>
+                <button id="close-modal-btn" class="close-btn"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div id="modal-cart-items"></div>
+            <button class="btn-primary" id="continue-shopping">Keep Browsing</button>
+        </div>
+    </div>
+
+    <script src="JS/script_carrito.js"></script>
+</body>
+</html>
