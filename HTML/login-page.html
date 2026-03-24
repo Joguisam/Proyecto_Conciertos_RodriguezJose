@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>TICKETHUB Admin</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/CSS/login-page.css" />
+</head>
+
+<body>
+
+    <div class="login-container">
+        <!-- Logo & Branding Section -->
+        <header class="branding">
+            <div class="logo-box">
+                <span class="material-symbols-outlined logo-icon">confirmation_number</span>
+            </div>
+            <h1 class="brand-name">TIKETHUB</h1>
+            <p class="brand-subtitle">Admin Console</p>
+        </header>
+        <!-- Login Card -->
+        <main class="login-card">
+            <div class="card-header">
+                <h2 class="card-title">Welcome Back</h2>
+                <p class="card-description">Enter your credentials to access the cockpit.</p>
+            </div>
+            <form class="login-form">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined input-icon">mail</span>
+                        <input class="form-input" id="email" placeholder="name@company.com" type="email"/>
+                    </div>
+                </div>
+                <!-- Password Field -->
+                <div class="form-group">
+                    <div class="form-label-row">
+                        <label class="form-label" for="password">Password</label>
+                        <a class="forgot-link" href="#">Forgot password?</a>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="material-symbols-outlined input-icon">lock</span>
+                        <input class="form-input" id="password" placeholder="••••••••" type="password"/>
+                        <button class="password-toggle" type="button">
+                            <span class="material-symbols-outlined" style="font-size: 1.125rem;">visibility</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Login Button -->
+                <button class="submit-button" type="submit">
+                    <span>Ingresar</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </form>
+            <!-- Support Footer -->
+            <footer class="card-footer">
+                <p class="support-text">
+                    Having trouble logging in? <br class="mobile-break" />
+                    <a class="support-link" href="#">Contact System Support</a>
+                </p>
+            </footer>
+        </main>
+        <!-- Decorative Background Elements -->
+        <div class="bg-glow-1"></div>
+        <div class="bg-glow-2"></div>
+    </div>
+    <script src="/JS/login.js"></script>
+    <script src="/JS/animation.js"></script>
+</body>
+
+</html>

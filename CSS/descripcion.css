@@ -1,0 +1,406 @@
+
+        /* Base Reset & Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-logo {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        /* Navigation Shell */
+        .nav-shell {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: rgba(19, 19, 19, 0.4);
+            backdrop-filter: blur(12px);
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: #cdbdff;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icon {
+            color: #cdbdff;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .nav-icon:hover {
+            color: #44ddc1;
+        }
+
+        /* Hero Canvas */
+        .hero-canvas {
+            position: relative;
+            width: 100%;
+            height: 85vh;
+            min-height: 600px;
+            display: flex;
+            align-items: flex-end;
+            padding: 4rem;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, #131313 5%, transparent 60%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #cbc3d9;
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #cdbdff;
+        }
+
+        .back-link-icon {
+            font-size: 18px;
+        }
+
+        /* Glassmorphism Card (Dinamismo Prism) */
+        .glass-card {
+            background: rgba(28, 27, 27, 0.6);
+            backdrop-filter: blur(24px);
+            border-radius: 2rem;
+            padding: 3rem;
+            max-width: 800px;
+            border: 1px solid rgba(205, 189, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .pulse-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(68, 221, 193, 0.15);
+            border: 1px solid rgba(68, 221, 193, 0.3);
+            border-radius: 2rem;
+            color: #44ddc1;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background: #44ddc1;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #44ddc1;
+        }
+
+        .event-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #cdbdff, #44ddc1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Meta Information */
+        .meta-strip {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #44ddc1;
+        }
+
+        .meta-text {
+            color: #cbc3d9;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .price-tag {
+            font-family: 'Manrope', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #e5e2e1;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .price-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            color: #948da2;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5d21df, #cdbdff);
+            color: #20005f;
+            padding: 1.25rem 2.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 20px rgba(93, 33, 223, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(93, 33, 223, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #44ddc1;
+            padding: 1.25rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(68, 221, 193, 0.3);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(68, 221, 193, 0.1);
+        }
+
+        /* Content Layout Sections */
+        .content-section {
+            padding: 6rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        .section-headline {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #cdbdff;
+        }
+
+        .editorial-text {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #cbc3d9;
+        }
+
+        .editorial-spacing {
+            margin-top: 4rem;
+        }
+
+        /* Venue Component */
+        .venue-wrapper {
+            position: relative;
+            height: 300px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        .venue-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .venue-label {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            background: rgba(19, 19, 19, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+        }
+
+        .venue-name {
+            font-weight: 700;
+            color: #44ddc1;
+        }
+
+        .venue-address {
+            font-size: 0.75rem;
+            color: #948da2;
+        }
+
+        /* Information Sidebar Styles */
+        .info-card {
+            background: #1c1b1b;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            position: sticky;
+            top: 6rem;
+            overflow: hidden;
+        }
+
+        .sidebar-headline {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(148, 141, 162, 0.1);
+        }
+
+        .detail-label {
+            color: #948da2;
+            font-size: 0.875rem;
+        }
+
+        .detail-value {
+            color: #e5e2e1;
+            font-weight: 600;
+        }
+
+        .inventory-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(93, 33, 223, 0.1);
+            border-radius: 1rem;
+        }
+
+        .inventory-label {
+            font-size: 0.75rem;
+            color: #cdbdff;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-bg {
+            flex: 1;
+            height: 4px;
+            background: rgba(205, 189, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            width: 85%;
+            height: 100%;
+            background: #44ddc1;
+            border-radius: 2px;
+        }
+
+        .sold-percentage {
+            font-size: 0.75rem;
+            color: #44ddc1;
+            font-weight: 600;
+        }
+
+        .glow-accent {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(93, 33, 223, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            top: -100px;
+            right: -100px;
+            pointer-events: none;
+        }
+
+        /* Footer */
+        .site-footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(148, 141, 162, 0.1);
+        }
+
+        .footer-logo {
+            margin-bottom: 1rem;
+        }
+
+        .footer-copy {
+            color: #948da2;
+            font-size: 0.75rem;
+        }
+
+        /* Content layout adjustments */
+        .editorial-container {
+            position: relative;
+            z-index: 1;
+        }

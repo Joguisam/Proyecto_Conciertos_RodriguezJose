@@ -1,0 +1,373 @@
+
+        :root {
+            --primary: #cdbdff;
+            --primary-container: #5d21df;
+            --on-primary-fixed: #20005f;
+            --secondary: #44ddc1;
+            --surface: #131313;
+            --surface-container: #201f1f;
+            --surface-container-highest: #353534;
+            --on-surface: #e5e2e1;
+            --on-surface-variant: #cbc3d9;
+            --outline-variant: rgba(73, 68, 86, 0.15);
+            --font-headline: 'Manrope', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --radius-default: 8px;
+            --radius-large: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--surface);
+            color: var(--on-surface);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-x: hidden;
+            position: relative;
+            background-image:
+                radial-gradient(circle at 0% 0%, #5d21df 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, var(--surface) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, #1c1b1b 0%, var(--surface) 100%);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 448px;
+            z-index: 10;
+        }
+
+        .branding {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 8px;
+        }
+
+        .logo-box {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-large);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            background: linear-gradient(to bottom right, var(--primary-container), var(--primary));
+        }
+
+        .logo-icon {
+            color: var(--on-primary-fixed);
+            font-size: 2.25rem;
+        }
+
+        .brand-name {
+            font-family: var(--font-headline);
+            font-weight: 900;
+            font-size: 1.875rem;
+            letter-spacing: -0.05em;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .brand-subtitle {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--on-surface-variant);
+            font-weight: 500;
+        }
+
+        .login-card {
+            background-color: rgba(32, 31, 31, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-large);
+            padding: 32px;
+            border: 1px solid var(--outline-variant);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header {
+            margin-bottom: 32px;
+        }
+
+        .card-title {
+            font-family: var(--font-headline);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--on-surface);
+            margin-bottom: 4px;
+        }
+
+        .card-description {
+            font-size: 0.875rem;
+            color: var(--on-surface-variant);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--on-surface);
+            margin-left: 4px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--on-surface-variant);
+            font-size: 1.25rem;
+            transition: color 0.2s;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: var(--surface-container-highest);
+            border: none;
+            height: 48px;
+            padding-left: 48px;
+            padding-right: 16px;
+            border-radius: var(--radius-default);
+            color: var(--on-surface);
+            font-family: var(--font-body);
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: #948da2;
+        }
+
+        .input-wrapper:focus-within .input-icon {
+            color: var(--secondary);
+        }
+
+        .input-wrapper:focus-within .form-input {
+            border-bottom: 2px solid var(--secondary);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-toggle:hover {
+            color: var(--on-surface);
+        }
+
+        .forgot-link {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .checkbox-input {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            background-color: var(--surface-container-highest);
+            border: 1px solid #494456;
+            cursor: pointer;
+            accent-color: var(--secondary);
+        }
+
+        .checkbox-label {
+            margin-left: 8px;
+            font-size: 0.75rem;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+        }
+
+        .submit-button {
+            width: 100%;
+            height: 56px;
+            color: var(--on-primary-fixed);
+            font-family: var(--font-headline);
+            font-weight: 700;
+            font-size: 1.125rem;
+            border: none;
+            border-radius: var(--radius-default);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(93, 33, 223, 0.2);
+            background: linear-gradient(to bottom right, var(--primary-container), var(--primary));
+        }
+
+        .submit-button:hover {
+            opacity: 0.9;
+        }
+
+        .submit-button:active {
+            transform: scale(0.98);
+        }
+
+        .card-footer {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(148, 141, 162, 0.1);
+            text-align: center;
+        }
+
+        .support-text {
+            font-size: 0.75rem;
+            color: var(--on-surface-variant);
+            line-height: 1.6;
+        }
+
+        .support-link {
+            color: var(--secondary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .support-link:hover {
+            text-decoration: underline;
+        }
+
+        .bg-glow-1 {
+            position: fixed;
+            top: -10%;
+            right: -10%;
+            width: 40%;
+            height: 40%;
+            background-color: rgba(93, 33, 223, 0.1);
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -10;
+        }
+
+        .bg-glow-2 {
+            position: fixed;
+            bottom: -10%;
+            left: -10%;
+            width: 40%;
+            height: 40%;
+            background-color: rgba(0, 190, 164, 0.05);
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -10;
+        }
+
+        /* Estilo para el mensaje emergente */
+    .toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.toast-success { background-color: #2ecc71; }
+.toast-error { background-color: #e74c3c; }
+
+        .mobile-break {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-break {
+                display: none;
+            }
+        }
+
+/* === Prism Dynamic Reveals === */
+
+/* 1. Definimos los fotogramas de la animación (entrada suave y subida) */
+@keyframes prismReveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98); /* Empieza abajo y un poco más pequeño */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);    /* Termina en su posición natural */
+    }
+}
+
+/* 2. Clase base: Oculta los elementos inicialmente */
+.reveal-on-scroll {
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity; /* Optimización para el navegador */
+}
+
+/* 3. Clase activa: Activa la animación cuando JS la añade */
+.reveal-on-scroll.is-visible {
+    animation: prismReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 4. Efecto Cascada (Delays): Para que los elementos no aparezcan todos a la vez */
+.reveal-on-scroll.delay-1 { animation-delay: 0.1s; }
+.reveal-on-scroll.delay-2 { animation-delay: 0.2s; }
+.reveal-on-scroll.delay-3 { animation-delay: 0.3s; }
+.reveal-on-scroll.delay-4 { animation-delay: 0.4s; }

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>TICKETHUB Admin - Sales Ledger</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/CSS/ventas.css">
+
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-name">TICKETHUB</span>
+            <span class="brand-sub">Admin Console</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-link" href="/HTML/dashboard.html">
+                <span class="material-symbols-outlined">grid_view</span>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" href="/HTML/categorias.html">
+                <span class="material-symbols-outlined">category</span>
+                <span>Categories</span>
+            </a>
+            <a class="nav-link" href="/HTML/eventos.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span>Events</span>
+            </a>
+            <a class="nav-link active" href="/HTML/ventas.html">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <span>Sales</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a class="nav-link" href="#">
+                <span class="material-symbols-outlined">settings</span>
+                <span>Settings</span>
+            </a>
+            <a class="nav-link" href="#">
+                <span class="material-symbols-outlined">contact_support</span>
+                <span>Support</span>
+            </a>
+        </div>
+    </aside>
+    <header class="header">
+        <div class="search-container">
+            <div class="search-wrapper">
+                <span class="search-icon material-symbols-outlined">search</span>
+                <input class="search-input" placeholder="Search transactions..." type="text" />
+            </div>
+            <span class="admin-tag">Admin Dashboard</span>
+        </div>
+        <div class="user-actions">
+            <button class="icon-btn">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="notification-dot"></span>
+            </button>
+            <button class="icon-btn">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div class="header-divider"></div>
+            <div class="user-profile">
+                <div class="user-info">
+                    <p class="user-name">Alex Rivera</p>
+                    <p class="user-role">System Admin</p>
+                </div>
+                <img alt="Alex Rivera" class="user-avatar"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvOYCczfcr77jjtd8P2I9QNkQrOeFuzC7pdxTK82BpiZNPtpC-RqKfmT4NokXqEa3YaIUielhGVdJ07U1HM3bUEvqGglRdyan5gDY7Bj0uUXThsnAZVQidNMEhZ0UGXt_wvhe5XyQKJ6ofn4mDd53TodsMTBo0J46NWWd82wBPztcOXSe0wE1sc3QiIfL4vRZiIRDj8KWsNPgvPLA_kHkyFWzdqKMc3RYrloLfIYVq8vD0rCf5YY-GmCRV00u3Mt1OdNsiMKiaFg" />
+                        <div class="status-dot"></div>
+            </div>
+        </div>
+    </header>
+    <main class="main-content">
+        <div class="hero-header">
+            <div>
+                <p class="section-label">Sales</p>
+                <h1 class="page-title">Sales Ledger</h1>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Total Revenue</span>
+                <div>
+                    <p class="stat-value" id="stat-revenue">$0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Tickets Sold</span>
+                <div>
+                    <p class="stat-value" id="stat-tickets">0</p>
+
+                </div>
+            </div>
+            <div class="stat-card stat-card-wide">
+                <div>
+                    <span class="stat-label">Active Markets</span>
+                    <p class="stat-value active-markets-value">0 Regions</p>
+                    <div class="market-chips">
+                        <span class="chip">Online Store</span>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined abstract-icon">public</span>
+            </div>
+        </div>
+        <div class="table-container">
+            <div class="scroll-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>City / Region</th>
+                            <th>Customer Data</th>
+                            <th>Status</th>
+                            <th class="text-right">Total Amount</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-tbody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div id="view-sale-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-view-modal" class="close-btn">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h2 style="margin-bottom: 20px; color: var(--primary);">Transaction Details</h2>
+            <div id="sale-details-content">
+                </div>
+        </div>
+    </div>
+
+    <script src="/JS/animation.js"></script>
+    <script src="/JS/script_ventas.js"></script>
+</body>
+
+</html>

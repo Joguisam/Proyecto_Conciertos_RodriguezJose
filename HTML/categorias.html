@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>TICKETHUB | Manage Categories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/CSS/categorias.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-name">TICKETHUB</span>
+            <span class="brand-sub">Admin Console</span>
+        </div>
+        <nav class="sidebar-nav">
+        <nav class="sidebar-nav">
+            <a class="nav-link" href="/HTML/dashboard.html">
+                <span class="material-symbols-outlined">grid_view</span>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link active" href="/HTML/categorias.html">
+                <span class="material-symbols-outlined">category</span>
+                <span>Categories</span>
+            </a>
+            <a class="nav-link" href="/HTML/eventos.html">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span>Events</span>
+            </a>
+            <a class="nav-link" href="/HTML/ventas.html">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <span>Sales</span>
+            </a>
+        </nav>
+        </nav>
+    </aside>
+
+    <main class="main-canvas">
+        <header class="top-app-bar">
+            <div class="search-container">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input class="search-input" id="searchInput" placeholder="Search categories..." type="text" />
+            </div>
+            <div class="user-profile">
+                <div class="user-info">
+                    <p class="user-name">Alex Rivera</p>
+                    <p class="user-role">System Admin</p>
+                </div>
+                <img alt="Profile" class="user-avatar" src="https://ui-avatars.com/api/?name=Alex+Rivera" />
+            </div>
+        </header>
+
+        <div class="content-container">
+            <section class="page-header">
+                <div>
+                    <h1 class="page-title">Categories</h1>
+                    <p class="page-subtitle">Manage your event classification architecture</p>
+                </div>
+                <button class="btn-add" id="btnAddNew">
+                    <span class="material-symbols-outlined">add</span> Add Category
+                </button>
+            </section>
+
+            <section class="data-table-container">
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category Name</th>
+                                <th>Description</th>
+                                <th>Created</th>
+                                <th class="actions-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="categoryModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">New Category</h2>
+                <button class="close-modal" id="closeModal">×</button>
+            </div>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label>Category Name</label>
+                    <input type="text" id="catName" placeholder="e.g. Cinema" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="catDesc" rows="3" placeholder="Brief description..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Select Icon</label>
+                    <div class="icon-selector" id="iconSelector">
+                        <div class="icon-option selected" data-icon="movie"><span class="material-symbols-outlined">movie</span></div>
+                        <div class="icon-option" data-icon="sports_soccer"><span class="material-symbols-outlined">sports_soccer</span></div>
+                        <div class="icon-option" data-icon="theater_comedy"><span class="material-symbols-outlined">theater_comedy</span></div>
+                        <div class="icon-option" data-icon="restaurant"><span class="material-symbols-outlined">restaurant</span></div>
+                        <div class="icon-option" data-icon="local_activity"><span class="material-symbols-outlined">local_activity</span></div>
+                        <div class="icon-option" data-icon="brush"><span class="material-symbols-outlined">brush</span></div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn-primary" id="saveBtn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content confirmation-card">
+            <div class="confirm-icon"><span class="material-symbols-outlined" style="color: #ff4d4d;">warning</span></div>
+            <h3>Delete Category?</h3>
+            <p>Are you sure? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelDelete">Cancel</button>
+                <button class="btn-primary" id="confirmDelete" style="background: #ff4d4d; color: white; border: none;">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/JS/categorias.js"></script>
+    <script src="/JS/animation.js"></script>
+</body>
+</html>
