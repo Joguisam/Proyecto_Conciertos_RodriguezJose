@@ -9,44 +9,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsCount = document.getElementById('results-count');
     const sidebarNav = document.getElementById('sidebar-categories');
 
-    // 1. CARGA DE DATOS INICIALES
-    if (!localStorage.getItem('tickethub_local_events')) {
-        const demoEvents = [
-            { id: 1, name: "Neon Horizon Festival", date: "2026-10-24", city: "New York", category: "Music", price: 149, image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4" },
-            { id: 2, name: "Tech Summit 2026", date: "2026-11-15", city: "London", category: "Tech", price: 299, image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678" },
-            { id: 3, name: "Midnight Sonata (VIP)", date: "2026-12-01", city: "Madrid", category: "Music", price: 85.50, image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4" },
-            { id: 4, name: "Art Expo Noir", date: "2027-01-10", city: "Paris", category: "Art", price: 45, image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b" }
-        ];
-        const demoCats = [
-            { name: "Music", icon: "music_note" },
-            { name: "Tech", icon: "devices" },
-            { name: "Art", icon: "palette" }
-        ];
-        localStorage.setItem('tickethub_local_events', JSON.stringify(demoEvents));
-        localStorage.setItem('tickethub_local_cats', JSON.stringify(demoCats));
+    // 1. CARGA DE DATOS DESDE LOCALSTORAGE (Tus datos de Admin)
+    let localEvents = JSON.parse(localStorage.getItem('tickethub_local_events')) || [];
+    let localCats = JSON.parse(localStorage.getItem('tickethub_local_cats')) || [];
+
+    // 2. GENERAR MENÚS DE CATEGORÍAS DINÁMICAMENTE
+    function setupMenus() {
+        // Cargar Sidebar
+        if (sidebarNav) {
+            // Mantener solo el botón Discover
+            const discoverBtn = document.getElementById('btn-discover');
+            sidebarNav.innerHTML = '';
+            sidebarNav.appendChild(discoverBtn);
+
+            localCats.forEach(cat => {
+                const a = document.createElement('a');
+                a.className = 'sidebar-link';
+                a.href = "#";
+                a.dataset.category = cat.name;
+                a.innerHTML = `<span class="material-symbols-outlined">${cat.icon}</span> ${cat.name}`;
+                sidebarNav.appendChild(a);
+            });
+        }
+
+        // Cargar Pills superiores
+        if (categoryPills) {
+            categoryPills.innerHTML = '<button class="pill active" data-category="all">All Events</button>';
+            localCats.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'pill';
+                btn.dataset.category = cat.name;
+                btn.textContent = cat.name;
+                categoryPills.appendChild(btn);
+            });
+        }
     }
 
-    const localEvents = JSON.parse(localStorage.getItem('tickethub_local_events'));
-    const localCats = JSON.parse(localStorage.getItem('tickethub_local_cats'));
-
-    // 2. RENDERIZAR CATEGORÍAS LATERALES
-    if (sidebarNav && localCats) {
-        localCats.forEach(cat => {
-            const catLink = document.createElement('a');
-            catLink.className = 'sidebar-link';
-            catLink.href = "#"; 
-            catLink.innerHTML = `<span class="material-symbols-outlined">${cat.icon}</span> ${cat.name}`;
-            sidebarNav.appendChild(catLink);
-        });
-    }
-
-    // 3. FUNCIÓN RENDERIZAR EVENTOS EN EL GRID
+    // 3. RENDERIZAR CARTAS DE EVENTOS
     function renderEvents(events) {
         eventGrid.innerHTML = '';
         resultsCount.textContent = `(${events.length} events found)`;
         
         if (events.length === 0) {
-            eventGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #cbc3d9; padding: 3rem; font-size: 1.1rem;">No events found with these filters.</p>`;
+            eventGrid.innerHTML = `<div class="no-results">No events found with the selected filters.</div>`;
             return;
         }
 
@@ -55,8 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'card';
             card.innerHTML = `
                 <div class="card-img-container">
-                    <img src="${ev.image}" alt="${ev.name}" class="card-img">
-                    <span class="card-category ${ev.category.toLowerCase()}-category">${ev.category}</span>
+                    <img src="${ev.image || 'https://via.placeholder.com/400x250'}" alt="${ev.name}" class="card-img">
+                    <span class="card-category">${ev.category}</span>
                 </div>
                 <div class="card-content">
                     <div class="card-header">
@@ -75,27 +80,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. LÓGICA DE FILTRADO UNIFICADA
+    // 4. MOTOR DE FILTRADO UNIFICADO
     function applyFilters() {
-        const text = searchInput.value.toLowerCase();
+        const text = searchInput.value.toLowerCase().trim();
         const city = cityFilter.value;
-        const maxPrice = priceFilter.value ? parseFloat(priceFilter.value) : Infinity;
+        const priceVal = priceFilter.value;
+        const maxPrice = priceVal ? parseFloat(priceVal) : Infinity;
         const start = dateStart.value ? new Date(dateStart.value) : null;
         const end = dateEnd.value ? new Date(dateEnd.value) : null;
-        
+
         const activePill = document.querySelector('.pill.active');
-        const cat = activePill ? activePill.dataset.category : 'all';
+        const activeCat = activePill ? activePill.dataset.category : 'all';
 
         const filtered = localEvents.filter(ev => {
-            const matchesText = ev.name.toLowerCase().includes(text);
+            // Búsqueda inteligente: Nombre, Categoría o Ciudad
+            const matchesText = ev.name.toLowerCase().includes(text) || 
+                               ev.category.toLowerCase().includes(text) ||
+                               ev.city.toLowerCase().includes(text);
+            
             const matchesCity = city === 'all' || ev.city === city;
-            const matchesCat = cat === 'all' || ev.category === cat;
-            const matchesPrice = ev.price <= maxPrice;
+            const matchesCat = activeCat === 'all' || ev.category === activeCat;
+            const matchesPrice = priceVal === "" || ev.price <= maxPrice;
 
-            const eventDate = new Date(ev.date);
+            // Filtro de fecha
+            const evDate = new Date(ev.date);
             let matchesDate = true;
-            if (start && eventDate < start) matchesDate = false;
-            if (end && eventDate > end) matchesDate = false;
+            if (start && evDate < start) matchesDate = false;
+            if (end && evDate > end) matchesDate = false;
 
             return matchesText && matchesCity && matchesCat && matchesPrice && matchesDate;
         });
@@ -103,22 +114,33 @@ document.addEventListener('DOMContentLoaded', () => {
         renderEvents(filtered);
     }
 
-    // 5. EVENT LISTENERS
+    // 5. SINCRONIZACIÓN DE UI
+    function updateActiveCategory(categoryName) {
+        document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.category === categoryName));
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.toggle('active', l.dataset.category === categoryName));
+        applyFilters();
+    }
+
+    // 6. EVENT LISTENERS
     searchInput.addEventListener('input', applyFilters);
     cityFilter.addEventListener('change', applyFilters);
     priceFilter.addEventListener('input', applyFilters);
     dateStart.addEventListener('change', applyFilters);
     dateEnd.addEventListener('change', applyFilters);
-    
-    if (categoryPills) {
-        categoryPills.addEventListener('click', (e) => {
-            if (e.target.classList.contains('pill')) {
-                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-                e.target.classList.add('active');
-                applyFilters();
-            }
-        });
-    }
 
+    categoryPills.addEventListener('click', (e) => {
+        if (e.target.classList.contains('pill')) updateActiveCategory(e.target.dataset.category);
+    });
+
+    sidebarNav.addEventListener('click', (e) => {
+        const link = e.target.closest('.sidebar-link');
+        if (link) {
+            e.preventDefault();
+            updateActiveCategory(link.dataset.category || 'all');
+        }
+    });
+
+    // Iniciar
+    setupMenus();
     renderEvents(localEvents);
 });
