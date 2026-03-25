@@ -1,93 +1,101 @@
 document.addEventListener('DOMContentLoaded', () => {
     const eventGrid = document.getElementById('event-grid');
     const categoryPills = document.getElementById('category-pills');
-    const sidebarNav = document.getElementById('sidebar-categories');
+    const eventSearch = document.getElementById('event-search');
     
-    // Datos de LocalStorage
+    // 1. CARGA DE DATOS
     let events = JSON.parse(localStorage.getItem('tickethub_local_events')) || [];
     let categories = JSON.parse(localStorage.getItem('tickethub_local_cats')) || [];
-    let activeCategory = 'all';
 
-    function renderUI() {
-        // 1. Renderizar Categorías
-        if (categoryPills) {
-            categoryPills.innerHTML = '<button class="pill active" data-category="all">All Events</button>';
-            categories.forEach(cat => {
-                categoryPills.innerHTML += `<button class="pill" data-category="${cat.name}">${cat.name}</button>`;
-            });
-        }
-
-        // 2. Renderizar Eventos
-        renderEvents(events);
-    }
-
+    // 2. FUNCIÓN DE RENDERIZADO (Grid Corregido y Botones Modernos)
     function renderEvents(eventsToDisplay) {
         if (!eventGrid) return;
         eventGrid.innerHTML = '';
 
+        if (eventsToDisplay.length === 0) {
+            eventGrid.innerHTML = `<p style="color: #666; grid-column: 1/-1; text-align: center; margin-top: 40px; font-family: 'Inter', sans-serif;">No events found.</p>`;
+            return;
+        }
+
         eventsToDisplay.forEach(ev => {
             const card = document.createElement('article');
-            card.className = 'card'; // Asegúrate de que esta clase esté en tu CSS
+            card.className = 'card'; 
+            
+            // Usamos las nuevas clases .btn-modern, .btn-add-cart-modern y .btn-details-modern
             card.innerHTML = `
                 <div class="card-img-container">
-                    <img src="${ev.image || 'https://via.placeholder.com/400x300'}" class="card-img">
+                    <img src="${ev.image || 'https://via.placeholder.com/400x300'}" alt="${ev.name}" class="event-image">
+                    <div class="card-badge">${ev.category || 'Event'}</div>
                 </div>
                 <div class="card-content">
-                    <div class="card-header">
-                        <h3 class="card-title">${ev.name}</h3>
-                        <span class="card-price">$${ev.price}</span>
+                    <h3 class="event-title">${ev.name}</h3>
+                    <div class="event-info">
+                        <span class="price">$${ev.price}</span>
                     </div>
-                    <div class="card-meta">
-                        <span>${ev.city}</span> | <span>${ev.date}</span>
+                    
+                    <div class="card-footer">
+                        
+                        <button class="btn-modern btn-add-cart-modern" onclick="window.handleAddToCart('${ev.id}')" title="Add to Cart">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                        </button>
+
+                        <a href="descripcion.html?id=${ev.id}" class="btn-modern btn-details-modern">
+                            View Details
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
                     </div>
-                    <button class="card-btn" onclick="window.handleAddToCart('${ev.id}')">
-                        <span class="material-symbols-outlined">add_shopping_cart</span> Get Tickets
-                    </button>
                 </div>
             `;
             eventGrid.appendChild(card);
         });
     }
 
-    // Filtros
-    document.getElementById('event-search').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = events.filter(ev => ev.name.toLowerCase().includes(term));
-        renderEvents(filtered);
-    });
+    // 3. RENDERIZAR PILLS DE CATEGORÍAS
+    function renderCategories() {
+        if (!categoryPills) return;
+        categoryPills.innerHTML = '<button class="pill active" data-category="all">All Events</button>';
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'pill';
+            btn.dataset.category = cat.name;
+            btn.textContent = cat.name;
+            categoryPills.appendChild(btn);
+        });
+    }
 
-    // Delegación de eventos para categorías
-    categoryPills.addEventListener('click', (e) => {
-        if (e.target.classList.contains('pill')) {
-            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            e.target.classList.add('active');
-            const cat = e.target.dataset.category;
-            const filtered = cat === 'all' ? events : events.filter(ev => ev.category === cat);
+    // 4. LÓGICA DE FILTROS Y BÚSQUEDA
+    if (eventSearch) {
+        eventSearch.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = events.filter(ev => ev.name.toLowerCase().includes(term));
             renderEvents(filtered);
-        }
-    });
+        });
+    }
 
-    renderUI();
+    if (categoryPills) {
+        categoryPills.addEventListener('click', (e) => {
+            if (e.target.classList.contains('pill')) {
+                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                const cat = e.target.dataset.category;
+                const filtered = cat === 'all' ? events : events.filter(ev => ev.category === cat);
+                renderEvents(filtered);
+            }
+        });
+    }
+
+    // 5. INICIALIZACIÓN
+    renderCategories();
+    renderEvents(events);
     if (window.actualizarContadorCarrito) window.actualizarContadorCarrito();
 });
 
-// PUENTE AL CARRITO
+// 6. PUENTE GLOBAL AL CARRITO
 window.handleAddToCart = (id) => {
     if (typeof window.agregarAlCarrito === 'function') {
         window.agregarAlCarrito(id);
     } else {
         console.error("El script del carrito no está cargado.");
-    }
-};
-
-// ... (Todo tu código anterior de renderEvents y filtros) ...
-
-// ESTA ES LA FUNCIÓN QUE CONECTA EL HTML CON EL CARRITO
-window.handleAddToCart = (id) => {
-    // Verificamos si la función del otro script existe
-    if (typeof window.agregarAlCarrito === 'function') {
-        window.agregarAlCarrito(id);
-    } else {
-        console.error("Error: El archivo script_carrito.js no se ha cargado correctamente.");
     }
 };
