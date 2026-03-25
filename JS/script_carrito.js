@@ -214,5 +214,5 @@ const nuevaVenta = {
     telefono: document.getElementById('cust-phone')?.value || "No proporcionado", 
     monto: totalPriceElement?.innerText || "$0.00",
     fecha: new Date().toLocaleDateString(),
-    hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: ' 2-digit ' })
 };

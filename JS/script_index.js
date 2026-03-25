@@ -144,3 +144,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMenus();
     renderEvents(localEvents);
 });
+
