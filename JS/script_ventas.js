@@ -4,85 +4,115 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalContent = document.getElementById('sale-details-content');
     const closeBtn = document.getElementById('close-view-modal');
 
-    // Elementos de las tarjetas de estadísticas
+    // Seleccionamos los cuadros de estadísticas para que se actualicen
     const totalRevenueElem = document.querySelector('.stat-card:nth-child(1) .stat-value');
     const ticketsSoldElem = document.querySelector('.stat-card:nth-child(2) .stat-value');
-    const activeMarketsElem = document.querySelector('.active-markets-value');
 
-    // 1. CARGAR DATOS
-    // Se asegura de usar la misma llave que el carrito: 'tickethub_sales'
+    // 1. CARGAR DATOS (Conexión directa con tickethub_sales generada en el carrito)
     let sales = JSON.parse(localStorage.getItem('tickethub_sales')) || [];
 
-    // 2. ACTUALIZAR ESTADÍSTICAS (Tarjetas superiores)
+    // 2. FUNCIÓN PARA ACTUALIZAR LOS CUADROS (Revenue y Tickets Sold)
     function updateStats() {
-        let total = 0;
+        let totalMoney = 0;
+        let totalTickets = 0;
+
         sales.forEach(sale => {
-            // Quitamos el "$" y comas para poder sumar el monto
-            const price = parseFloat(sale.monto.replace(/[$,]/g, '')) || 0;
-            total += price;
+            // Limpiamos el monto (ej: "$150.00" -> 150.00)
+            const cleanAmount = parseFloat(sale.monto.replace(/[$,]/g, '')) || 0;
+            totalMoney += cleanAmount;
+            
+            // Sumamos la cantidad de tickets dentro de esta venta
+            if (sale.tickets && Array.isArray(sale.tickets)) {
+                totalTickets += sale.tickets.length;
+            } else {
+                totalTickets += 1; // Fallback por si hay datos viejos
+            }
         });
 
-        if (totalRevenueElem) totalRevenueElem.innerText = `$${total.toLocaleString()}`;
-        if (ticketsSoldElem) ticketsSoldElem.innerText = sales.length;
-        if (activeMarketsElem) activeMarketsElem.innerText = "1 Region (Online)";
+        // Inyectamos los valores en los cuadros de la interfaz
+        if (totalRevenueElem) {
+            totalRevenueElem.innerText = `$${totalMoney.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        }
+        if (ticketsSoldElem) {
+            ticketsSoldElem.innerText = totalTickets;
+        }
     }
 
-    // 3. RENDERIZAR TABLA DE VENTAS
-    function renderTable() {
+    // 3. FUNCIÓN DE RENDERIZADO DE LA TABLA
+    function renderSales() {
         if (!salesTableBody) return;
         salesTableBody.innerHTML = '';
+        
+        // Renderizamos de la más reciente a la más antigua
+        [...sales].reverse().forEach((sale, index) => {
+            // Corregimos el índice para que el "ojito" abra la venta correcta al estar invertida la lista
+            const originalIndex = sales.length - 1 - index;
 
-        // Invertimos el array para que las ventas más recientes salgan arriba
-        const displaySales = [...sales].reverse();
+            // Obtenemos la ciudad del primer ticket para la columna "City"
+            const city = sale.tickets && sale.tickets.length > 0 ? sale.tickets[0].city : 'N/A';
 
-        displaySales.forEach((sale, index) => {
-            const initials = sale.cliente ? sale.cliente.substring(0, 2).toUpperCase() : '??';
-            
-            const rowHTML = `
+            const row = `
                 <tr>
                     <td>${sale.fecha}</td>
+                    <td>${city}</td>
                     <td>
-                        <div class="location-cell">
-                            <span class="city-name">Online Store</span>
-                            <span class="region-tag">${sale.id}</span> 
+                        <div style="display:flex; flex-direction:column;">
+                            <strong>${sale.cliente}</strong>
+                            <span style="font-size:0.75rem; opacity:0.6;">${sale.email}</span>
                         </div>
                     </td>
-                    <td>
-                        <div class="customer-cell">
-                            <div class="avatar">${initials}</div>
-                            <div class="customer-info">
-                                <span class="customer-name">${sale.cliente}</span>
-                                <span class="customer-email">${sale.email}</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="status-badge confirmed">Confirmed</span></td>
-                    <td class="text-right amount-cell">${sale.monto}</td>
+                    <td><span class="status-pill">${sale.status || 'Confirmed'}</span></td>
+                    <td class="text-right"><strong>${sale.monto}</strong></td>
                     <td class="text-center">
-                        <button class="action-btn view-btn" onclick="verDetalle(${sales.length - 1 - index})">
+                        <button class="action-btn" onclick="verDetalle(${originalIndex})">
                             <span class="material-symbols-outlined">visibility</span>
                         </button>
                     </td>
                 </tr>`;
-            salesTableBody.innerHTML += rowHTML;
+            salesTableBody.insertAdjacentHTML('beforeend', row);
         });
     }
 
-    // 4. FUNCIÓN PARA VER DETALLES (MODAL)
+    // 4. FUNCIÓN PARA EL "OJITO" (DETALLES ACUMULADOS)
     window.verDetalle = function(index) {
         const sale = sales[index];
         if (!sale || !modalContent) return;
 
+        // Creamos la lista visual de tickets comprados en esa boleta
+        let ticketsHTML = '';
+        if (sale.tickets && sale.tickets.length > 0) {
+            ticketsHTML = sale.tickets.map(t => `
+                <div style="padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 8px; border-left: 3px solid var(--secondary); display: flex; justify-content: space-between;">
+                    <span>🎟️ ${t.name}</span>
+                    <strong>$${t.price}</strong>
+                </div>
+            `).join('');
+        } else {
+            ticketsHTML = `<p style="opacity:0.5;">No item details available</p>`;
+        }
+
         modalContent.innerHTML = `
-            <div style="display: grid; gap: 15px; color: white;">
-                <p><strong>Ticket ID:</strong> <span style="color: var(--secondary);">${sale.id}</span></p>
-                <p><strong>Customer:</strong> ${sale.cliente}</p>
-                <p><strong>Email:</strong> ${sale.email}</p>
-                <p><strong>Phone:</strong> ${sale.telefono || 'N/A'}</p>
-                <p><strong>Address:</strong> ${sale.direccion || 'N/A'}</p>
-                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
-                <p><strong>Date:</strong> ${sale.fecha}</p>
-                <p><strong>Total Paid:</strong> <span style="font-size: 1.2rem; color: var(--primary);">${sale.monto}</span></p>
+            <div style="display: grid; gap: 15px; color: white; font-family: 'Inter', sans-serif;">
+                <div style="text-align: center; border-bottom: 1px solid #333; padding-bottom: 15px;">
+                    <h3 style="color: var(--primary); margin:0;">${sale.id}</h3>
+                    <small style="opacity: 0.5;">${sale.fecha}</small>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
+                    <p><strong>Customer:</strong><br>${sale.cliente}</p>
+                    <p><strong>ID:</strong><br>${sale.identificacion || 'N/A'}</p>
+                    <p><strong>Email:</strong><br>${sale.email}</p>
+                    <p><strong>Phone:</strong><br>${sale.telefono || 'N/A'}</p>
+                </div>
+                <div style="margin-top: 10px;">
+                    <p style="margin-bottom: 10px; font-weight: 700;">Purchase Breakdown:</p>
+                    <div style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
+                        ${ticketsHTML}
+                    </div>
+                </div>
+                <div style="text-align: right; border-top: 1px solid #333; padding-top: 15px;">
+                    <span style="font-size: 1rem; opacity: 0.7;">TOTAL AMOUNT:</span>
+                    <h2 style="color: var(--secondary); margin: 0;">${sale.monto}</h2>
+                </div>
             </div>
         `;
         modal.style.display = 'flex';
@@ -95,14 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Cerrar modal si se hace clic fuera del contenido
     window.onclick = (event) => {
-        if (event.target === modal) {
+        if (event.target == modal) {
             modal.style.display = 'none';
         }
     };
 
     // INICIALIZACIÓN
     updateStats();
-    renderTable();
+    renderSales();
 });
