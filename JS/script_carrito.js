@@ -41,10 +41,10 @@ window.agregarAlCarrito = (id) => {
     const events = JSON.parse(localStorage.getItem('tickethub_local_events')) || [];
     const event = events.find(e => e.id == id);
     if (event) {
-        window.cartStorage.push({...event});
+        window.cartStorage.push({ ...event });
         localStorage.setItem('temp_cart', JSON.stringify(window.cartStorage));
         window.actualizarContadorCarrito();
-        if(window.showToast) window.showToast(event.name);
+        if (window.showToast) window.showToast(event.name);
     }
 };
 
@@ -58,7 +58,7 @@ window.quitarDelCarrito = (index) => {
 // --- PROCESO DE COMPRA ---
 document.addEventListener('DOMContentLoaded', () => {
     const checkoutForm = document.getElementById('checkout-form');
-    
+
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -70,29 +70,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 2. Guardar en Ventas (Conectividad)
             const ventasExistentes = JSON.parse(localStorage.getItem('tickethub_sales')) || [];
-            const nuevaVenta = {
-                id: boletaId,
-                fecha: new Date().toLocaleString(),
-                cliente: document.getElementById('cust-name').value,
-                email: document.getElementById('cust-email').value,
-                telefono: document.getElementById('cust-phone').value,
-                direccion: document.getElementById('cust-address').value,
-                identificacion: document.getElementById('cust-id').value,
-                comentarios: document.getElementById('cust-comment').value,
-                monto: `$${total}`,
-                status: "Confirmed",
-                tickets: [...window.cartStorage] // Acumulación de tickets
-            };
+            const comentarioValor = document.getElementById('cust-comment');
+            console.log("Comentario capturado:", comentarioValor?.value);
             
-            ventasExistentes.push(nuevaVenta);
-            localStorage.setItem('tickethub_sales', JSON.stringify(ventasExistentes));
+                const nuevaVenta = {
+                    id: boletaId,
+                    fecha: new Date().toLocaleString(),
+                    cliente: document.getElementById('cust-name').value,
+                    email: document.getElementById('cust-email').value,
+                    telefono: document.getElementById('cust-phone').value,
+                    direccion: document.getElementById('cust-address').value,
+                    identificacion: document.getElementById('cust-id').value,
+                    comentarios: document.getElementById('cust-comment').value,
+                    monto: `$${total}`,
+                    status: "Confirmed",
+                    tickets: [...window.cartStorage] // Acumulación de tickets
+                };
 
-            // 3. Cerrar modal de formulario
-            document.getElementById('cart-modal').classList.remove('show');
+                ventasExistentes.push(nuevaVenta);
+                localStorage.setItem('tickethub_sales', JSON.stringify(ventasExistentes));
 
-            // 4. Mostrar Éxito
-            showSuccessModal(boletaId);
-        });
+                // 3. Cerrar modal de formulario
+                document.getElementById('cart-modal').classList.remove('show');
+
+                // 4. Mostrar Éxito
+                showSuccessModal(boletaId);
+            });
     }
 
     function showSuccessModal(id) {
@@ -110,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="btn-primary" id="finish-btn" style="width:100%;">Close & Clear Cart</button>
                 <div class="auto-close-bar"></div>
             </div>`;
-        
+
         document.body.appendChild(overlay);
 
         const cleanAndExit = () => {
@@ -119,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('temp_cart', JSON.stringify([]));
             window.actualizarContadorCarrito();
             overlay.remove();
-            if(checkoutForm) checkoutForm.reset();
+            if (checkoutForm) checkoutForm.reset();
         };
 
         document.getElementById('finish-btn').onclick = cleanAndExit;
@@ -131,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('cart-modal').classList.add('show');
         window.renderCartItems();
     });
-    
+
     document.getElementById('close-modal-btn')?.addEventListener('click', () => {
         document.getElementById('cart-modal').classList.remove('show');
     });

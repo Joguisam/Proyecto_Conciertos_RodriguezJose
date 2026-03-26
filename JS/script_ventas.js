@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Limpiamos el monto (ej: "$150.00" -> 150.00)
             const cleanAmount = parseFloat(sale.monto.replace(/[$,]/g, '')) || 0;
             totalMoney += cleanAmount;
-            
+
             // Sumamos la cantidad de tickets dentro de esta venta
             if (sale.tickets && Array.isArray(sale.tickets)) {
                 totalTickets += sale.tickets.length;
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Inyectamos los valores en los cuadros de la interfaz
         if (totalRevenueElem) {
-            totalRevenueElem.innerText = `$${totalMoney.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            totalRevenueElem.innerText = `$${totalMoney.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
         }
         if (ticketsSoldElem) {
             ticketsSoldElem.innerText = totalTickets;
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderSales() {
         if (!salesTableBody) return;
         salesTableBody.innerHTML = '';
-        
+
         // Renderizamos de la más reciente a la más antigua
         [...sales].reverse().forEach((sale, index) => {
             // Corregimos el índice para que el "ojito" abra la venta correcta al estar invertida la lista
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4. FUNCIÓN PARA EL "OJITO" (DETALLES ACUMULADOS)
-    window.verDetalle = function(index) {
+    window.verDetalle = function (index) {
         const sale = sales[index];
         if (!sale || !modalContent) return;
 
@@ -103,6 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p><strong>Email:</strong><br>${sale.email}</p>
                     <p><strong>Phone:</strong><br>${sale.telefono || 'N/A'}</p>
                 </div>
+
+                <div style="margin-top: 10px;">
+                    <p><strong>Comments:</strong></p>
+                    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; font-size: 0.9rem;">${sale.comentarios || 'No comments provided'}
+                </div>
+            </div>
+
                 <div style="margin-top: 10px;">
                     <p style="margin-bottom: 10px; font-weight: 700;">Purchase Breakdown:</p>
                     <div style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
