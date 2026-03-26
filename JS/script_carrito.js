@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 telefono: document.getElementById('cust-phone').value,
                 direccion: document.getElementById('cust-address').value,
                 identificacion: document.getElementById('cust-id').value,
+                comentarios: document.getElementById('cust-comment').value,
                 monto: `$${total}`,
                 status: "Confirmed",
                 tickets: [...window.cartStorage] // Acumulación de tickets
