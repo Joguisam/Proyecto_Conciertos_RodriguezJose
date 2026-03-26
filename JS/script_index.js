@@ -1,146 +1,134 @@
 document.addEventListener('DOMContentLoaded', () => {
     const eventGrid = document.getElementById('event-grid');
-    const searchInput = document.getElementById('event-search');
-    const cityFilter = document.getElementById('city-filter');
     const categoryPills = document.getElementById('category-pills');
+    const eventSearch = document.getElementById('event-search');
+    
+    // Elementos de filtros adicionales
+    const cityFilter = document.getElementById('city-filter');
     const priceFilter = document.getElementById('price-filter');
     const dateStart = document.getElementById('date-start');
     const dateEnd = document.getElementById('date-end');
     const resultsCount = document.getElementById('results-count');
-    const sidebarNav = document.getElementById('sidebar-categories');
 
-    // 1. CARGA DE DATOS DESDE LOCALSTORAGE (Tus datos de Admin)
-    let localEvents = JSON.parse(localStorage.getItem('tickethub_local_events')) || [];
-    let localCats = JSON.parse(localStorage.getItem('tickethub_local_cats')) || [];
+    // 1. CARGA DE DATOS
+    let events = JSON.parse(localStorage.getItem('tickethub_local_events')) || [];
+    let categories = JSON.parse(localStorage.getItem('tickethub_local_cats')) || [];
 
-    // 2. GENERAR MENÚS DE CATEGORÍAS DINÁMICAMENTE
-    function setupMenus() {
-        // Cargar Sidebar
-        if (sidebarNav) {
-            // Mantener solo el botón Discover
-            const discoverBtn = document.getElementById('btn-discover');
-            sidebarNav.innerHTML = '';
-            sidebarNav.appendChild(discoverBtn);
-
-            localCats.forEach(cat => {
-                const a = document.createElement('a');
-                a.className = 'sidebar-link';
-                a.href = "#";
-                a.dataset.category = cat.name;
-                a.innerHTML = `<span class="material-symbols-outlined">${cat.icon}</span> ${cat.name}`;
-                sidebarNav.appendChild(a);
-            });
-        }
-
-        // Cargar Pills superiores
-        if (categoryPills) {
-            categoryPills.innerHTML = '<button class="pill active" data-category="all">All Events</button>';
-            localCats.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.className = 'pill';
-                btn.dataset.category = cat.name;
-                btn.textContent = cat.name;
-                categoryPills.appendChild(btn);
-            });
-        }
-    }
-
-    // 3. RENDERIZAR CARTAS DE EVENTOS
-    function renderEvents(events) {
+    // 2. FUNCIÓN DE RENDERIZADO
+    function renderEvents(eventsToDisplay) {
+        if (!eventGrid) return;
         eventGrid.innerHTML = '';
-        resultsCount.textContent = `(${events.length} events found)`;
         
-        if (events.length === 0) {
-            eventGrid.innerHTML = `<div class="no-results">No events found with the selected filters.</div>`;
+        // Actualizar contador
+        if (resultsCount) resultsCount.textContent = `${eventsToDisplay.length} events found`;
+
+        if (eventsToDisplay.length === 0) {
+            eventGrid.innerHTML = `<p style="color: #666; grid-column: 1/-1; text-align: center; margin-top: 40px; font-family: 'Inter', sans-serif;">No events found with these filters.</p>`;
             return;
         }
 
-        events.forEach(ev => {
-            const card = document.createElement('div');
-            card.className = 'card';
+        eventsToDisplay.forEach(ev => {
+            const card = document.createElement('article');
+            card.className = 'card'; 
             card.innerHTML = `
                 <div class="card-img-container">
-                    <img src="${ev.image || 'https://via.placeholder.com/400x250'}" alt="${ev.name}" class="card-img">
-                    <span class="card-category">${ev.category}</span>
+                    <img src="${ev.image || 'https://via.placeholder.com/400x300'}" alt="${ev.name}" class="event-image">
+                    <div class="card-badge">${ev.category || 'Event'}</div>
                 </div>
                 <div class="card-content">
-                    <div class="card-header">
-                        <h3 class="card-title">${ev.name}</h3>
-                        <span class="card-price">$${parseFloat(ev.price).toFixed(2)}</span>
+                    <h3 class="event-title">${ev.name}</h3>
+                    <div class="event-info">
+                        <span class="price">$${ev.price}</span>
+                        <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+                            <div><span class="material-symbols-outlined" style="font-size: 14px">location_on</span> ${ev.city}</div>
+                            <div><span class="material-symbols-outlined" style="font-size: 14px">calendar_today</span> ${ev.date}</div>
+                        </div>
                     </div>
-                    <div class="card-meta">
-                        <div class="meta-item"><span class="material-symbols-outlined">calendar_today</span><span>${ev.date}</span></div>
-                        <div class="meta-item"><span class="material-symbols-outlined">location_on</span><span>${ev.city}</span></div>
+                    
+                    <div class="card-footer">
+                        <button class="btn-modern btn-add-cart-modern" onclick="window.handleAddToCart('${ev.id}')" title="Add to Cart">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                        </button>
+                        <a href="descripcion.html?id=${ev.id}" class="btn-modern btn-details-modern">
+                            Details
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
                     </div>
-                    <button class="card-btn add-to-cart-btn" data-name="${ev.name}" data-price="${ev.price}" data-image="${ev.image}">
-                        <span class="material-symbols-outlined">shopping_cart</span> Add to Cart
-                    </button>
-                </div>`;
+                </div>
+            `;
             eventGrid.appendChild(card);
         });
     }
 
-    // 4. MOTOR DE FILTRADO UNIFICADO
+    // 3. RENDERIZAR PILLS DE CATEGORÍAS
+    function renderCategories() {
+        if (!categoryPills) return;
+        // Mantenemos el botón "All"
+        categoryPills.innerHTML = '<button class="pill active" data-category="all">All Events</button>';
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'pill';
+            btn.dataset.category = cat.name;
+            btn.textContent = cat.name;
+            categoryPills.appendChild(btn);
+        });
+    }
+
+    // 4. LÓGICA DE FILTRADO INTEGRAL
     function applyFilters() {
-        const text = searchInput.value.toLowerCase().trim();
-        const city = cityFilter.value;
-        const priceVal = priceFilter.value;
-        const maxPrice = priceVal ? parseFloat(priceVal) : Infinity;
-        const start = dateStart.value ? new Date(dateStart.value) : null;
-        const end = dateEnd.value ? new Date(dateEnd.value) : null;
-
+        const searchTerm = eventSearch.value.toLowerCase();
+        const selectedCity = cityFilter.value;
+        const maxPrice = parseFloat(priceFilter.value) || Infinity;
+        const startDate = dateStart.value;
+        const endDate = dateEnd.value;
         const activePill = document.querySelector('.pill.active');
-        const activeCat = activePill ? activePill.dataset.category : 'all';
+        const selectedCategory = activePill ? activePill.dataset.category : 'all';
 
-        const filtered = localEvents.filter(ev => {
-            // Búsqueda inteligente: Nombre, Categoría o Ciudad
-            const matchesText = ev.name.toLowerCase().includes(text) || 
-                               ev.category.toLowerCase().includes(text) ||
-                               ev.city.toLowerCase().includes(text);
+        const filtered = events.filter(ev => {
+            const matchesSearch = ev.name.toLowerCase().includes(searchTerm);
+            const matchesCategory = (selectedCategory === 'all' || ev.category === selectedCategory);
+            const matchesCity = (selectedCity === 'all' || ev.city === selectedCity);
+            const matchesPrice = parseFloat(ev.price) <= maxPrice;
             
-            const matchesCity = city === 'all' || ev.city === city;
-            const matchesCat = activeCat === 'all' || ev.category === activeCat;
-            const matchesPrice = priceVal === "" || ev.price <= maxPrice;
-
-            // Filtro de fecha
-            const evDate = new Date(ev.date);
+            // Filtro de fechas
             let matchesDate = true;
-            if (start && evDate < start) matchesDate = false;
-            if (end && evDate > end) matchesDate = false;
+            if (startDate && ev.date < startDate) matchesDate = false;
+            if (endDate && ev.date > endDate) matchesDate = false;
 
-            return matchesText && matchesCity && matchesCat && matchesPrice && matchesDate;
+            return matchesSearch && matchesCategory && matchesCity && matchesPrice && matchesDate;
         });
 
         renderEvents(filtered);
     }
 
-    // 5. SINCRONIZACIÓN DE UI
-    function updateActiveCategory(categoryName) {
-        document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.category === categoryName));
-        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.toggle('active', l.dataset.category === categoryName));
-        applyFilters();
+    // 5. LISTENERS
+    if (eventSearch) eventSearch.addEventListener('input', applyFilters);
+    if (cityFilter) cityFilter.addEventListener('change', applyFilters);
+    if (priceFilter) priceFilter.addEventListener('input', applyFilters);
+    if (dateStart) dateStart.addEventListener('change', applyFilters);
+    if (dateEnd) dateEnd.addEventListener('change', applyFilters);
+
+    if (categoryPills) {
+        categoryPills.addEventListener('click', (e) => {
+            if (e.target.classList.contains('pill')) {
+                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                e.target.classList.add('active');
+                applyFilters();
+            }
+        });
     }
 
-    // 6. EVENT LISTENERS
-    searchInput.addEventListener('input', applyFilters);
-    cityFilter.addEventListener('change', applyFilters);
-    priceFilter.addEventListener('input', applyFilters);
-    dateStart.addEventListener('change', applyFilters);
-    dateEnd.addEventListener('change', applyFilters);
-
-    categoryPills.addEventListener('click', (e) => {
-        if (e.target.classList.contains('pill')) updateActiveCategory(e.target.dataset.category);
-    });
-
-    sidebarNav.addEventListener('click', (e) => {
-        const link = e.target.closest('.sidebar-link');
-        if (link) {
-            e.preventDefault();
-            updateActiveCategory(link.dataset.category || 'all');
-        }
-    });
-
-    // Iniciar
-    setupMenus();
-    renderEvents(localEvents);
+    // 6. INICIALIZACIÓN
+    renderCategories();
+    renderEvents(events);
+    if (window.actualizarContadorCarrito) window.actualizarContadorCarrito();
 });
+
+// PUENTE GLOBAL AL CARRITO
+window.handleAddToCart = (id) => {
+    if (typeof window.agregarAlCarrito === 'function') {
+        window.agregarAlCarrito(id);
+    } else {
+        alert("Event added to cart!"); // Fallback si no hay script_carrito
+    }
+};

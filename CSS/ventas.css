@@ -971,4 +971,21 @@ body {
         .detail-label { color: #888; font-size: 0.9rem; }
         .detail-value { font-weight: 500; }
         .total-highlight { color: #4CAF50; font-size: 1.4rem; font-weight: 800; }
+
+        .region-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(68, 221, 193, 0.1); /* Color secundario suave */
+    color: #44ddc1;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-family: 'monospace';
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.status-badge.confirmed {
+    background: rgba(68, 221, 193, 0.15);
+    color: #44ddc1;
+}
     

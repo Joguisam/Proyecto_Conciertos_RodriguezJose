@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -13,11 +12,9 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="/CSS/dashboard.css" />
-
 </head>
 
 <body>
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <span class="brand-name">TICKETHUB</span>
@@ -33,230 +30,95 @@
                 <span>Categories</span>
             </a>
             <a class="nav-link" href="/HTML/eventos.html">
-                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="material-symbols-outlined">confirmation_number</span>
                 <span>Events</span>
             </a>
             <a class="nav-link" href="/HTML/ventas.html">
-                <span class="material-symbols-outlined">receipt_long</span>
-                <span>Sales</span>
+                <span class="material-symbols-outlined">payments</span>
+                <span>Sales Ledger</span>
             </a>
         </nav>
-        <div class="sidebar-footer">
-            <a class="nav-link" href="#">
-                <span class="material-symbols-outlined">settings</span>
-                <span>Settings</span>
-            </a>
-            <a class="nav-link" href="#">
-                <span class="material-symbols-outlined">contact_support</span>
-                <span>Support</span>
-            </a>
-        </div>
     </aside>
-    <!-- Main Wrapper -->
-    <main class="main-wrapper">
-        <!-- Header -->
-        <header class="header">
-            <div class="search-bar">
-                <span class="material-symbols-outlined">search</span>
-                <input class="search-input" placeholder="Search events, orders, or customers..." type="text" />
-            </div>
-            <div class="header-actions">
-                <div class="icon-group">
-                    <button class="icon-btn">
-                        <span class="material-symbols-outlined">notifications</span>
-                        <span class="notification-dot"></span>
-                    </button>
-                    <button class="icon-btn">
-                        <span class="material-symbols-outlined">settings</span>
-                    </button>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title">Command Center</h1>
+            <div class="user-profile">
+                <div class="user-info">
+                    <p class="user-name">Administrator</p>
+                    <p class="user-role">Super User</p>
                 </div>
-                <div class="divider"></div>
-                <div class="profile-section">
-                    <div class="user-info">
-                        <p class="user-name">Alex Rivera</p>
-                        <p class="user-role">Super Admin</p>
-                    </div>
-                    <div class="avatar-container">
-                        <img alt="Alex Rivera" class="avatar"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvOYCczfcr77jjtd8P2I9QNkQrOeFuzC7pdxTK82BpiZNPtpC-RqKfmT4NokXqEa3YaIUielhGVdJ07U1HM3bUEvqGglRdyan5gDY7Bj0uUXThsnAZVQidNMEhZ0UGXt_wvhe5XyQKJ6ofn4mDd53TodsMTBo0J46NWWd82wBPztcOXSe0wE1sc3QiIfL4vRZiIRDj8KWsNPgvPLA_kHkyFWzdqKMc3RYrloLfIYVq8vD0rCf5YY-GmCRV00u3Mt1OdNsiMKiaFg" />
-                        <div class="status-dot"></div>
-                    </div>
-                </div>
+                <div class="avatar">AD</div>
             </div>
         </header>
-        <!-- Dashboard Content -->
-        <div class="content-container">
-            <!-- Welcome Section -->
-            <section class="section-header">
-                <div class="header-titles">
-                    <p>System Overview</p>
-                    <h1>Welcome back, <span class="gradient-text">Alex</span></h1>
-                    <p class="header-desc">Your events are performing 12% better than last week. Here is what's
-                        happening today.</p>
+
+        <div class="dashboard-grid">
+            <section class="stats-row">
+                <div class="stat-card reveal-on-scroll">
+                    <p class="stat-label">Total Gross Sales</p>
+                    <h2 class="stat-value" id="total-gross-sales">$0.00</h2>
+                    <span class="stat-delta positive">+12.5% from last month</span>
                 </div>
-                <div class="status-badge">
-                    <div class="status-indicator"></div>
-                    <span>System Status: Optimal</span>
+                <div class="stat-card reveal-on-scroll">
+                    <p class="stat-label">Active Events</p>
+                    <h2 class="stat-value" id="active-events-count">0</h2>
+                    <span class="stat-delta">Live on marketplace</span>
                 </div>
-            </section>
-            <!-- Stats Grid -->
-            <section class="stats-grid">
-                <div class="card card-large">
-                    <span class="material-symbols-outlined card-icon-bg">trending_up</span>
-                    <div>
-                        <span class="stat-label">Total Gross Sales</span>
-                        <div class="stat-value-container">
-                            <h2 class="stat-value stat-value-large">$142,850</h2>
-                            <span class="stat-trend">+24.5%</span>
-                        </div>
-                    </div>
-                    <div class="card-footer-tags">
-                        <div class="tag tag-secondary">
-                            <span class="pulse-dot"></span>
-                            Live Tracking Active
-                        </div>
-                        <div class="tag tag-muted">Updated 2m ago</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="stat-icon-wrapper wrapper-primary">
-                        <span class="material-symbols-outlined">calendar_month</span>
-                    </div>
-                    <div>
-                        <span class="stat-label">Total Events</span>
-                        <h2 class="stat-value stat-value-med">1,204</h2>
-                        <p class="stat-hint">Across 14 global locations</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="stat-icon-wrapper wrapper-secondary">
-                        <span class="material-symbols-outlined">category</span>
-                    </div>
-                    <div>
-                        <span class="stat-label">Active Categories</span>
-                        <h2 class="stat-value stat-value-med">32</h2>
-                        <p class="stat-hint">Music festivals leading growth</p>
-                    </div>
+                <div class="stat-card reveal-on-scroll">
+                    <p class="stat-label">Active Categories</p>
+                    <h2 class="stat-value" id="active-cats-count">0</h2>
+                    <span class="stat-delta">System classifications</span>
                 </div>
             </section>
-            <!-- Main Dashboard Split -->
-            <section class="dashboard-layout">
-                <!-- Left: Transactions -->
-                <div class="table-card">
+
+            <section class="content-split">
+                <div class="table-container reveal-on-scroll">
                     <div class="table-header">
-                        <h3 class="table-title">Recent Ticket Sales</h3>
-                        <a class="view-all-link" href="/HTML/ventas.html">
-                            View All Transactions
-                            <span class="material-symbols-outlined view-all-icon">arrow_forward</span>
-                        </a>
+                        <h3 class="section-subtitle">Recent Tickets</h3>
+                        <a href="/HTML/ventas.html" class="btn-text">View All</a>
                     </div>
-                    <div class="table-rows">
-                        <!-- Row 1 -->
-                        <div class="table-row">
-                            <div class="event-info">
-                                <div class="event-thumb thumb-synth">MS</div>
-                                <div class="event-details">
-                                    <p>Midnight Synth</p>
-                                    <p>Music Event</p>
-                                </div>
-                            </div>
-                            <div class="stat-text">24 Tickets</div>
-                            <div class="amount-text">+$2,400.00</div>
-                            <div class="align-right">
-                                <span class="status-pill pill-success">Success</span>
-                            </div>
-                        </div>
-                        <!-- Row 2 -->
-                        <div class="table-row">
-                            <div class="event-info">
-                                <div class="event-thumb thumb-con">TC</div>
-                                <div class="event-details">
-                                    <p>Tech Con '24</p>
-                                    <p>Conference</p>
-                                </div>
-                            </div>
-                            <div class="stat-text">5 Tickets</div>
-                            <div class="amount-text">+$1,250.00</div>
-                            <div class="align-right">
-                                <span class="status-pill pill-success">Success</span>
-                            </div>
-                        </div>
-                        <!-- Row 3 -->
-                        <div class="table-row">
-                            <div class="event-info">
-                                <div class="event-thumb thumb-expo">NE</div>
-                                <div class="event-details">
-                                    <p>Neon Expo</p>
-                                    <p>Exhibition</p>
-                                </div>
-                            </div>
-                            <div class="stat-text">1 Ticket</div>
-                            <div class="stat-text stat-text-muted">$45.00</div>
-                            <div class="align-right">
-                                <span class="status-pill pill-failed">Failed</span>
-                            </div>
-                        </div>
-                        <!-- Row 4 -->
-                        <div class="table-row">
-                            <div class="event-info">
-                                <div class="event-thumb thumb-drift">UD</div>
-                                <div class="event-details">
-                                    <p>Urban Drift</p>
-                                    <p>Automotive</p>
-                                </div>
-                            </div>
-                            <div class="stat-text">12 Tickets</div>
-                            <div class="amount-text">+$600.00</div>
-                            <div class="align-right">
-                                <span class="status-pill pill-success">Success</span>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th class="text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-tickets-tbody">
+                            </tbody>
+                    </table>
                 </div>
-                <!-- Right: Pulse & Campaign -->
-                <div class="side-column">
-                    <div class="pulse-card">
-                        <h3 class="pulse-header">
-                            Live Pulse
-                            <div class="live-dot-ping"></div>
-                        </h3>
+
+                <div class="side-panel">
+                    <div class="activity-feed reveal-on-scroll">
+                        <h3 class="section-subtitle">System Logs</h3>
                         <div class="timeline">
                             <div class="timeline-item">
-                                <div class="timeline-dot timeline-dot-active"></div>
-                                <p class="time-label">Just Now</p>
-                                <p class="time-content">Ticket sold for <span class="highlight">Neon Nights</span> in
-                                    Berlin</p>
-                            </div>
-                            <div class="timeline-item">
                                 <div class="timeline-dot"></div>
-                                <p class="time-label">12m Ago</p>
-                                <p class="time-content">New event category <span class="highlight">Retro Wave</span>
-                                    added</p>
+                                <p class="time-label">Just Now</p>
+                                <p class="time-content">Database <span class="highlight">Sync</span> completed successfully</p>
                             </div>
                             <div class="timeline-item timeline-item-last">
                                 <div class="timeline-dot"></div>
                                 <p class="time-label">45m Ago</p>
-                                <p class="time-content">Admin <span class="highlight-on-surface">Alex</span> updated
-                                    permissions</p>
+                                <p class="time-content">Admin <span class="highlight-on-surface">System</span> updated stats</p>
                             </div>
                         </div>
                     </div>
-                    <div class="campaign-card">
+                    <div class="campaign-card reveal-on-scroll">
                         <span class="material-symbols-outlined campaign-bg-icon">rocket_launch</span>
-                        <h3 class="campaign-title">Launch Campaign</h3>
-                        <p class="campaign-desc">Send promotional blasts for upcoming summer festivals.</p>
-                        <button class="btn-start">Start Now</button>
+                        <h3 class="campaign-title">Quick Actions</h3>
+                        <p class="campaign-desc">Manage your events and check real-time sales performance.</p>
+                        <button class="btn-start" onclick="location.href='/HTML/eventos.html'">New Event</button>
                     </div>
                 </div>
             </section>
         </div>
     </main>
     
-    <!-- Floating Action Button -->
-    <button class="fab">
-        <span class="material-symbols-outlined">add</span>
-    </button>
     <script src="/JS/animation.js"></script>
+    <script src="/JS/script_dashboard.js"></script>
 </body>
-
 </html>
